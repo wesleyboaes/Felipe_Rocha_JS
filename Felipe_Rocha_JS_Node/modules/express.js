@@ -5,25 +5,53 @@ const app = express();
 
 app.use(express.json());
 
+app.set("view engine", "ejs");
+app.set("views", "src/views");
+
+// Middlewares => Functions executed before any action in express
+
+app.use((req, res, next) => {
+  // requisition, response and next makes express continue the code
+  console.log(`Request Type: ${req.method}`);
+  console.log(`Content Type: ${req.headers["content-type"]}`);
+  console.log(`Date: ${new Date()}`);
+
+  next();
+});
+
+app.get("/views/users", async (req, res) => {
+  const users = await UserModel.find({});
+  res.render("index", { users }); // index.ejs
+});
+
 app.get("/home", (req, res) => {
   res.contentType("application/html");
   res.status(200).send("<h1>hello world!</h1>");
 });
 
-app.get("/users", (req, res) => {
-  const users = [
-    {
-      name: "John",
-      email: "john@doe.com",
-    },
-    {
-      name: "Jane",
-      email: "jane@doe,com",
-    },
-  ];
-  res.status(200).json(users);
+// All users
+app.get("/users", async (req, res) => {
+  try {
+    const users = await UserModel.find({}); // May contain a filter inside "find({})". E.g.: find({name:"Wesley"})
+    res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).send(error.message); // .send to be a string, not json
+  }
 });
 
+// User by ID
+app.get("/users/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const user = await UserModel.findById(id);
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+// Create users
 app.post("/users", async (req, res) => {
   try {
     const user = await UserModel.create(req.body);
@@ -31,6 +59,28 @@ app.post("/users", async (req, res) => {
     res.status(201).json(user); // The registry we are trying to create was successfully created
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+// Update users
+app.patch("/users/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true }); // Needs the object { new: true } to update the registry
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+// Deleting users
+app.delete("/users/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await UserModel.findByIdAndDelete(id);
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).send(error.message);
   }
 });
 
