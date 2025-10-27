@@ -1,0 +1,19 @@
+{
+  "name": "felipe_rocha_js",
+  "version": "1.0.0",
+  "description": "JS course by Felipe Rocha",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wesleyboaes/Felipe_Rocha_JS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wesleyboaes/Felipe_Rocha_JS/issues"
+  },
+  "homepage": "https://github.com/wesleyboaes/Felipe_Rocha_JS#readme"
+}
