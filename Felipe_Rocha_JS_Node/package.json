@@ -1,0 +1,14 @@
+{
+  "name": "js_node",
+  "version": "1.0.0",
+  "description": "Node.js Course",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
